@@ -5,7 +5,6 @@ import { Button, Input } from '@rneui/themed'
 import { makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 
-import { showToast } from '../lib/notifications';
 import { supabase } from '../lib/supabase'
 import { AuthContext } from '../lib/auth-context';
 

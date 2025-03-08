@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View } from 'react-native'
-
-export type Contact = {
-  firstName: string
-  lastName: string
-}
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { ContactModel } from '../lib/models/contact'
+import CreateContact from './CreateContact'
 
 export interface ContactListProps {
-  contacts: Contact[]
+  contacts: ContactModel[]
 }
 
 /**
@@ -15,11 +12,15 @@ export interface ContactListProps {
  * @returns 
  */
 export default function ContactsList(props: ContactListProps) {
+  const noContactsMessage = 'No contacts found! Create one?';
   return (
     <View style={styles.container}>
       {
-        !props.contacts
-          ? <p>No contacts found. Create one?</p>
+        !props.contacts || !props.contacts.length
+          ? <View>
+              <Text>{noContactsMessage}</Text>
+              <CreateContact />
+            </View>
           : <div>
             {
               props.contacts.map(contact => {

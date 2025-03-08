@@ -48,7 +48,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
           } else {
             console.log('sign in data', data)
             setSession(JSON.stringify(data))
-            router.push('/contacts');
+            router.push('/');
           }
         },
         signOut: () => {
