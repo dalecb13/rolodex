@@ -1,19 +1,22 @@
-import { Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import ContactsList from '../../components/ContactsList';
 
 export const unstable_settings = {
   initialRouteName: '(root)',
 };
 
-export default function AppLayout() {
+export default function HomePage() {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    
+  })
+
   return (
-    <Stack>
-      <Stack.Screen name="(root)" />
-      <Stack.Screen
-        name="sign-in"
-        options={{
-          presentation: 'modal',
-        }}
-      />
-    </Stack>
+    <View>
+      <h1>Contacts</h1>
+      <ContactsList contacts={contacts} />
+    </View>
   );
 }

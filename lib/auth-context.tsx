@@ -1,9 +1,11 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
+import { router } from 'expo-router';
 import { useStorageState } from './use-storage-state';
 import { supabase } from './supabase';
-import { Session } from '@supabase/supabase-js';
+import { showToast } from './notifications';
+import { Alert } from 'react-native';
 
-const AuthContext = createContext<{
+export const AuthContext = createContext<{
   signIn: (email: string, password: string) => void;
   signOut: () => void;
   session?: string | null;
@@ -33,13 +35,21 @@ export function SessionProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: (email: string, password: string) => {
-          // Perform sign-in logic here
-          supabase.auth.getSession().then(({ data: { session } }) => {
-            if (session) {
-              setSession(JSON.stringify(session));
-            }
+        signIn: async (email: string, password: string) => {
+          showToast('signing in')
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
           })
+
+          if (error) {
+            Alert.alert(error.message)
+            console.warn(error)
+          } else {
+            console.log('sign in data', data)
+            setSession(JSON.stringify(data))
+            router.push('/contacts');
+          }
         },
         signOut: () => {
           setSession(null);

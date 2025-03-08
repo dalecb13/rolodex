@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { router } from 'expo-router';
-import { supabase } from '../lib/supabase'
 import { Button, Input } from '@rneui/themed'
+import { makeRedirectUri } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 
-export default function Auth() {
+import { showToast } from '../lib/notifications';
+import { supabase } from '../lib/supabase'
+import { AuthContext } from '../lib/auth-context';
+
+WebBrowser.maybeCompleteAuthSession(); // required for web only
+const redirectTo = makeRedirectUri();
+
+export default function SignInUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const authContext = useContext(AuthContext);
 
   async function signInWithEmail() {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-
-    if (error) {
-      Alert.alert(error.message)
-    } else {
-      router.push('contacts');
-    }
+    setLoading(true);
+    authContext.signIn(email, password);
     setLoading(false)
   }
 
@@ -34,14 +34,31 @@ export default function Auth() {
       password: password,
     })
 
-    if (error) Alert.alert(error.message)
+    if (error) {
+      Alert.alert(error.message)
+      console.warn(error)
+    }
     if (!session) {
+      console.warn('no session')
       Alert.alert('Please check your inbox for email verification!')
     } else {
-      router.push('contacts');
+      console.log('proceed!')
+      router.push('/');
     }
     setLoading(false)
   }
+
+  const sendMagicLink = async () => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: redirectTo,
+      },
+    });
+  
+    if (error) throw error;
+    // Email sent.
+  };
 
   return (
     <View style={styles.container}>
@@ -71,6 +88,9 @@ export default function Auth() {
       </View>
       <View style={styles.verticallySpaced}>
         <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Button onPress={sendMagicLink} title="Send Magic Link" />
       </View>
     </View>
   )
