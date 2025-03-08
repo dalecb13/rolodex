@@ -28,7 +28,7 @@
     "plugins": [
       "expo-router",
       "expo-secure-store"
-    ]
-  },
-  "scheme": "your-app-scheme"
+    ],
+    "scheme": "com.supabase"
+  }
 }
