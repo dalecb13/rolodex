@@ -1,8 +1,8 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { router } from 'expo-router';
-import { useStorageState } from './use-storage-state';
-import { supabase } from './supabase';
-import { showToast } from './notifications';
+import { useStorageState } from '../use-storage-state';
+import { supabase } from '../supabase';
+import { showToast } from '../notifications';
 import { Alert } from 'react-native';
 
 export const AuthContext = createContext<{

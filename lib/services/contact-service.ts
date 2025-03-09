@@ -5,6 +5,7 @@ import { supabase } from "../supabase"
 const CONTACT_TABLE = 'contacts';
 
 export const getAllContacts = async (): Promise<ContactModel[]> => {
+  console.log('getting contacts')
   const { data, error } = await supabase
     .from(CONTACT_TABLE)
     .select()
@@ -14,8 +15,12 @@ export const getAllContacts = async (): Promise<ContactModel[]> => {
     return [];
   }
 
+  console.log('retrieved contacts', data)
+
   return data as ContactModel[];
 }
+
+
 
 export const createContact = async (contactDetails: CreateContactModel) => {
   console.log('creating contact', contactDetails)

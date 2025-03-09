@@ -6,7 +6,7 @@ import { makeRedirectUri } from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 
 import { supabase } from '../lib/supabase'
-import { AuthContext } from '../lib/auth-context';
+import { AuthContext } from '../lib/context/auth-context';
 
 WebBrowser.maybeCompleteAuthSession(); // required for web only
 const redirectTo = makeRedirectUri();
