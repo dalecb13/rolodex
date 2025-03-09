@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { ContactModel } from '../lib/models/contact'
 import CreateContact from './CreateContact'
+import Contact from './Contact'
 
 export interface ContactListProps {
   contacts: ContactModel[]
@@ -24,10 +25,10 @@ export default function ContactsList(props: ContactListProps) {
           : <div>
             {
               props.contacts.map(contact => {
-                return <div>
-                  <p>{contact.firstName}</p>
-                  <p>{contact.lastName}</p>
-                </div>
+                return <Contact
+                  firstName={contact.firstName}
+                  lastName={contact.lastName}>
+                </Contact>
               })
             }
           </div>

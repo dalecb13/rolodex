@@ -20,8 +20,6 @@ export const getAllContacts = async (): Promise<ContactModel[]> => {
   return data as ContactModel[];
 }
 
-
-
 export const createContact = async (contactDetails: CreateContactModel) => {
   console.log('creating contact', contactDetails)
   const { error } = await supabase
